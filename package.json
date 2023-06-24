@@ -1,7 +1,7 @@
 {
   "name": "mobiletto-driver-b2",
-  "version": "1.0.4",
-  "description": "The b2 driver for mobiletto. This package is intended to be used with mobiletto-base, which does not include any drivers",
+  "version": "1.0.5",
+  "description": "The Backblaze b2 driver for mobiletto. This package is intended to be used with mobiletto-base, which does not include any drivers",
   "main": "index.js",
   "keywords": [
     "storage",
