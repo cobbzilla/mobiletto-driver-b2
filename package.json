@@ -1,6 +1,6 @@
 {
   "name": "mobiletto-driver-b2",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "The Backblaze b2 driver for mobiletto. This package is intended to be used with mobiletto-base, which does not include any drivers",
   "main": "index.js",
   "keywords": [
@@ -29,6 +29,6 @@
   "dependencies": {
     "@gideo-llc/backblaze-b2-upload-any": "^0.1.4",
     "backblaze-b2": "^1.7.0",
-    "mobiletto-common": "1.0.1"
+    "mobiletto-common": "1.0.2"
   }
 }
