@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import B2 from "backblaze-b2";
-import { MobilettoVisitor, MobilettoMetadata, MobilettoListOptions, MobilettoWriteSource, MobilettoRemoveOptions } from "mobiletto-base";
+import { MobilettoVisitor, MobilettoMetadata, MobilettoListOptions, MobilettoWriteSource, MobilettoRemoveOptions, MobilettoFeatureFlags } from "mobiletto-base";
 export type B2Options = {
     bucket: string;
     partSize?: number;
@@ -40,6 +40,7 @@ declare class StorageClient {
     recommendedPartSize: number | undefined;
     configuredPartSize: number | undefined;
     normalizeRegex: RegExp;
+    flags: () => MobilettoFeatureFlags;
     driver_metadata?: (path: string) => Promise<B2Metadata>;
     constructor(keyId: string, appKey: string, opts: B2Options);
     auth: () => Promise<void>;

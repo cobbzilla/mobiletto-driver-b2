@@ -15,9 +15,9 @@ import {
     logger,
     connect,
     mobiletto,
-    closeRedis,
     registerDriver,
     flushAll,
+    shutdownMobiletto,
 } from "mobiletto-base";
 
 import { storageClient as b2Driver } from "../lib/esm/index.js";
@@ -95,8 +95,8 @@ async function writeRandomFile(fixture, size) {
     return await fixture.api.write(fixture.name, dataGenerator());
 }
 
-// const encryptionTests = () => [null, { key: rand(32) }];
-const encryptionTests = () => [null];
+const encryptionTests = () => [null, { key: rand(32) }];
+// const encryptionTests = () => [null];
 // const encryptionTests = () => [{ key: rand(32) }];
 
 const REDIS_ENABLED = {
@@ -120,8 +120,8 @@ const REDIS_DISABLED = {
     },
 };
 
-// const redisTests = () => [REDIS_ENABLED, REDIS_DISABLED];
-const redisTests = () => [REDIS_ENABLED];
+const redisTests = () => [REDIS_ENABLED, REDIS_DISABLED];
+// const redisTests = () => [REDIS_ENABLED];
 // const redisTests = () => [REDIS_DISABLED];
 
 const expectBlankVolume = false;
@@ -386,6 +386,7 @@ for (const redisSetup of redisTests()) {
                             expect(e).is.null;
                         }
                     });
+
                     it("should successfully list a file individually", async () => {
                         const singleFile = await fixture.api.list(fixture.name);
                         expect(singleFile).to.have.lengthOf(1);
@@ -424,6 +425,7 @@ for (const redisSetup of redisTests()) {
                                 .to.not.be.null;
                         }
                     });
+
                     it("should load metadata for one of the new files", async () => {
                         await assertMeta(fixture.api, fixture.name, READ_SZ);
                     });
@@ -609,5 +611,5 @@ for (const redisSetup of redisTests()) {
 
 after((done) => {
     logger.info("all tests finished, tearing down redis...");
-    closeRedis().finally(done);
+    shutdownMobiletto().finally(done);
 });

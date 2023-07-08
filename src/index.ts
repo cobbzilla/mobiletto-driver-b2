@@ -24,6 +24,7 @@ import {
     MobilettoWriteSource,
     MobilettoGenerator,
     MobilettoRemoveOptions,
+    MobilettoFeatureFlags,
 } from "mobiletto-base";
 
 // B2 tokens last 24 hours. Let's refresh ours after 23 hours and 50 minutes
@@ -74,6 +75,7 @@ class StorageClient {
     recommendedPartSize: number | undefined;
     configuredPartSize: number | undefined;
     normalizeRegex: RegExp;
+    flags: () => MobilettoFeatureFlags;
     driver_metadata?: (path: string) => Promise<B2Metadata>;
     constructor(keyId: string, appKey: string, opts: B2Options) {
         if (!keyId || !appKey || !opts.bucket)
@@ -93,6 +95,9 @@ class StorageClient {
                 : opts.prefix + this.delimiter
             : "";
         this.lastAuth = 0;
+        this.flags = (): MobilettoFeatureFlags => ({
+            list_tryMetaIfEmpty: true,
+        });
     }
 
     auth = async () => {
@@ -163,7 +168,7 @@ class StorageClient {
             return [];
         }
         const objects = files.map((f) => {
-            logger.debug(`addListedFiles(${path}) adding file: ${f.fileName}`);
+            logger.debug(`processList(${path}) adding file: ${f.fileName}`);
             return this.file2object(f);
         });
         if (visitor) {
@@ -203,7 +208,7 @@ class StorageClient {
 
             let response = await this.b2.listFileNames({
                 bucketId: this.bucket,
-                startFileName: p,
+                startFileName: "",
                 maxFileCount,
                 delimiter: recursive ? "" : this.delimiter,
                 prefix: pfx,
@@ -469,6 +474,7 @@ class StorageClient {
         }
         if (meta.type === M_FILE) {
             try {
+                await this.auth();
                 const response = await this.b2.listFileVersions({
                     bucketId: this.bucket,
                     startFileName: normPath,
@@ -498,9 +504,10 @@ class StorageClient {
             try {
                 logger.debug(`b2.remove(${path})`);
                 const normPath = this.normalizePath(path);
+                await this.auth();
                 versionsResponse = await this.b2.listFileVersions({
                     bucketId: this.bucket,
-                    startFileId: "",
+                    startFileId: meta.b2id,
                     startFileName: normPath,
                     maxFileCount: 1000,
                 });
@@ -514,6 +521,7 @@ class StorageClient {
                         ...(await this.deleteVersions(path, normPath, versionsResponse.data.files, quiet, errors))
                     );
                     logger.debug(`b2.remove(${path})`);
+                    await this.auth();
                     versionsResponse = await this.b2.listFileVersions({
                         bucketId: this.bucket,
                         startFileName: versionsResponse.data.nextFileName,
