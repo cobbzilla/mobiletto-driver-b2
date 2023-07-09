@@ -25,12 +25,13 @@ import {
     MobilettoGenerator,
     MobilettoRemoveOptions,
     MobilettoFeatureFlags,
+    MobilettoOptions,
 } from "mobiletto-base";
 
 // B2 tokens last 24 hours. Let's refresh ours after 23 hours and 50 minutes
 const AUTH_REFRESH = 1000 * 60 * 60 * 24 - 1000 * 60 * 10;
 
-export type B2Options = {
+export type B2Options = MobilettoOptions & {
     bucket: string;
     partSize?: number;
     prefix?: string;

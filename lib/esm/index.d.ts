@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import B2 from "backblaze-b2";
-import { MobilettoVisitor, MobilettoMetadata, MobilettoListOptions, MobilettoWriteSource, MobilettoRemoveOptions, MobilettoFeatureFlags } from "mobiletto-base";
-export type B2Options = {
+import { MobilettoVisitor, MobilettoMetadata, MobilettoListOptions, MobilettoWriteSource, MobilettoRemoveOptions, MobilettoFeatureFlags, MobilettoOptions } from "mobiletto-base";
+export type B2Options = MobilettoOptions & {
     bucket: string;
     partSize?: number;
     prefix?: string;
