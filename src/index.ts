@@ -32,7 +32,7 @@ import {
 const AUTH_REFRESH = 1000 * 60 * 60 * 24 - 1000 * 60 * 10;
 
 export type B2Options = MobilettoOptions & {
-    bucket: string;
+    bucket?: string;
     partSize?: number;
     prefix?: string;
     delimiter?: string;
