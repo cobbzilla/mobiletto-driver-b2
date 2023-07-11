@@ -1,6 +1,6 @@
 {
   "name": "mobiletto-driver-b2",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "type": "module",
   "description": "The Backblaze b2 driver for mobiletto. This package is intended to be used with mobiletto-base, which does not include any drivers",
   "main": "index.js",
@@ -49,7 +49,6 @@
     "mobiletto-driver-local": "^2.0.2",
     "mocha": "^10.2.0",
     "prettier": "^2.8.8",
-    "randomstring": "^1.3.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.1.6"
   },
