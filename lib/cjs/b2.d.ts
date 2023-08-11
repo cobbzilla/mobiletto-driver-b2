@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import B2 from "backblaze-b2";
-import { MobilettoVisitor, MobilettoMetadata, MobilettoListOptions, MobilettoWriteSource, MobilettoRemoveOptions, MobilettoFeatureFlags, MobilettoOptions, MobilettoDriverInfo } from "mobiletto-base";
+import { MobilettoVisitor, MobilettoMetadata, MobilettoListOptions, MobilettoWriteSource, MobilettoRemoveOptions, MobilettoFeatureFlags, MobilettoOptions, MobilettoDriverInfo, MobilettoDriverScope } from "mobiletto-base";
 export type B2Options = MobilettoOptions & {
     bucket?: string;
     partSize?: number;
@@ -30,7 +30,11 @@ export type B2Metadata = MobilettoMetadata & {
     b2id: string;
 };
 export declare const B2Flags: MobilettoFeatureFlags;
-export declare const B2Info: MobilettoDriverInfo;
+export type B2InfoType = {
+    driver: string;
+    scope: MobilettoDriverScope;
+};
+export declare const B2Info: B2InfoType;
 declare class StorageClient {
     b2: B2WithUploadAny;
     bucket: string;
