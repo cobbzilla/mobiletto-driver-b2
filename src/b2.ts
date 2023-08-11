@@ -26,6 +26,7 @@ import {
     MobilettoRemoveOptions,
     MobilettoFeatureFlags,
     MobilettoOptions,
+    MobilettoDriverInfo,
 } from "mobiletto-base";
 
 // B2 tokens last 24 hours. Let's refresh ours after 23 hours and 50 minutes
@@ -65,6 +66,15 @@ export type B2Metadata = MobilettoMetadata & {
     b2id: string;
 };
 
+export const B2Flags: MobilettoFeatureFlags = {
+    list_tryMetaIfEmpty: true,
+};
+
+export const B2Info: MobilettoDriverInfo = {
+    driver: "b2",
+    scope: "global",
+};
+
 class StorageClient {
     b2;
     bucket;
@@ -77,6 +87,7 @@ class StorageClient {
     configuredPartSize: number | undefined;
     normalizeRegex: RegExp;
     flags: () => MobilettoFeatureFlags;
+    info: () => MobilettoDriverInfo;
     driver_metadata?: (path: string) => Promise<B2Metadata>;
     constructor(keyId: string, appKey: string, opts: B2Options) {
         if (!keyId || !appKey || !opts.bucket)
@@ -96,9 +107,8 @@ class StorageClient {
                 : opts.prefix + this.delimiter
             : "";
         this.lastAuth = 0;
-        this.flags = (): MobilettoFeatureFlags => ({
-            list_tryMetaIfEmpty: true,
-        });
+        this.flags = () => B2Flags;
+        this.info = () => B2Info;
     }
 
     auth = async () => {
